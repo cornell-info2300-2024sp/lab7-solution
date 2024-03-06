@@ -48,6 +48,7 @@ $sticky_values = array(
 if (isset($_POST["request-sample"])) {
 
   // Assume the form is valid
+  $form_valid = true;
 
   // Get HTTP request user data
   $form_values["name"] = trim($_POST["name"]); // untrusted
@@ -69,13 +70,25 @@ if (isset($_POST["request-sample"])) {
   // Phone is required; is the phone value empty?
   // Note: Does not validate phone format.
   //       For project 2 only validate: required or not required.
-  if ($form_values["phone"] == " ") {
+  if ($form_values["phone"] == "") {
     // no phone provided, it"s required!
     // form is not valid
     $form_valid = false;
 
     // show phone feedback message by removing hidden class
     $feedback_css_classes["phone"] = "";
+  }
+
+  // Bouquet is required; is the bouquet value empty?
+  // Note: Does not validate bouquet format.
+  //       For project 2 only validate: required or not required.
+  if ($form_values["bouquet"] == "") {
+    // no bouquet provided, it"s required!
+    // form is not valid
+    $form_valid = false;
+
+    // show bouquet feedback message by removing hidden class
+    $feedback_css_classes["bouquet"] = "";
   }
 
   // If the form is valid, show confirmation message
@@ -87,9 +100,9 @@ if (isset($_POST["request-sample"])) {
     $sticky_values["name"] = $form_values["name"];
     $sticky_values["phone"] = $form_values["phone"];
 
-    $sticky_values["roses"] = "checked";
-    $sticky_values["daisies"] = "checked";
-    $sticky_values["gardenias"] = "checked";
+    $sticky_values["roses"] = ($form_values["bouquet"] == "roses" ? "checked" : "");
+    $sticky_values["daisies"] = ($form_values["bouquet"] == "daisies" ? "checked" : "");
+    $sticky_values["gardenias"] = ($form_values["bouquet"] == "gardenias" ? "checked" : "");
   }
 }
 ?>
@@ -114,70 +127,75 @@ if (isset($_POST["request-sample"])) {
     <!-- make these connections by taking already working code and          -->
     <!-- modifying it to fit your purposes.                                 -->
 
-    <!-- TODO: Show the form or the confirmation message, not both. -->
+    <!-- Show the form or the confirmation message, not both. -->
+    <?php if (!$show_confirmation_message) { ?>
 
-    <h2><?php echo $page_title; ?></h2>
+      <h2><?php echo $page_title; ?></h2>
 
-    <p>Welcome to the 2300 Flower Shop! We are a wholesale supplier of flowers. We specialize in bulk sales of fresh cut-flowers.</p>
+      <p>Welcome to the 2300 Flower Shop! We are a wholesale supplier of flowers. We specialize in bulk sales of fresh cut-flowers.</p>
 
-    <section>
-      <h2>Sample Request Form</h2>
+      <section>
+        <h2>Sample Request Form</h2>
 
-      <p>Our premium quality flowers are the best in Ithaca. See the quality yourself! Use the form below to request a <em>free</em> sample bouquet of roses, daisies, or gardenias.</p>
+        <p>Our premium quality flowers are the best in Ithaca. See the quality yourself! Use the form below to request a <em>free</em> sample bouquet of roses, daisies, or gardenias.</p>
 
-      <form method="post" action="/flowershop/confirmation" novalidate>
+        <form method="post" action="/flowershop" novalidate>
 
-        <p class="feedback <?php echo $feedback_css_classes["name"]; ?>">Please provide your business" name.</p>
+          <p class="feedback <?php echo $feedback_css_classes["name"]; ?>">Please provide your business" name.</p>
 
-        <div class="label-input">
-          <label for="name_field">Business Name:</label>
-          <input id="name_field" type="text" name="name" value="<?php echo $sticky_values["name"]; ?>">
-        </div>
-
-        <p class="feedback <?php echo $feedback_css_classes["phone"]; ?>">Please provide a contact phone number.</p>
-
-        <div class="label-input">
-          <label for="phone_field">Contact Phone:</label>
-          <input id="phone_field" type="tel" name="phone" value="<?php echo $sticky_values["phone"]; ?>">
-        </div>
-
-        <p class="feedback <?php echo $feedback_css_classes["bouquet"]; ?>">Please select a sample bouquet.</p>
-
-        <div class="form-group label-input" role="group" aria-labelledby="bouquet_head">
-          <div id="bouquet_head">
-            Bouquet:
+          <div class="label-input">
+            <label for="name_field">Business Name:</label>
+            <input id="name_field" type="text" name="name" value="<?php echo $sticky_values["name"]; ?>">
           </div>
-          <div>
-            <div>
-              <input type="radio" id="roses_input" name="bouquet" value="roses" <?php echo $sticky_values["roses"]; ?>>
-              <label for="roses_input">Roses</label>
+
+          <p class="feedback <?php echo $feedback_css_classes["phone"]; ?>">Please provide a contact phone number.</p>
+
+          <div class="label-input">
+            <label for="phone_field">Contact Phone:</label>
+            <input id="phone_field" type="tel" name="phone" value="<?php echo $sticky_values["phone"]; ?>">
+          </div>
+
+          <p class="feedback <?php echo $feedback_css_classes["bouquet"]; ?>">Please select a sample bouquet.</p>
+
+          <div class="form-group label-input" role="group" aria-labelledby="bouquet_head">
+            <div id="bouquet_head">
+              Bouquet:
             </div>
             <div>
-              <input type="radio" id="daisies_input" name="bouquet" value="daisies" <?php echo $sticky_values["daisies"]; ?>>
-              <label for="daisies_input">Daisies</label>
-            </div>
-            <div>
-              <input type="radio" id="gardenias_input" name="bouquet" value="gardenias" <?php echo $sticky_values["gardenias"]; ?>>
-              <label for="gardenias_input">Gardenias</label>
+              <div>
+                <input type="radio" id="roses_input" name="bouquet" value="roses" <?php echo $sticky_values["roses"]; ?>>
+                <label for="roses_input">Roses</label>
+              </div>
+              <div>
+                <input type="radio" id="daisies_input" name="bouquet" value="daisies" <?php echo $sticky_values["daisies"]; ?>>
+                <label for="daisies_input">Daisies</label>
+              </div>
+              <div>
+                <input type="radio" id="gardenias_input" name="bouquet" value="gardenias" <?php echo $sticky_values["gardenias"]; ?>>
+                <label for="gardenias_input">Gardenias</label>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="align-right">
-          <button type="submit">
-            Request Sample
-          </button>
-        </div>
-      </form>
-    </section>
+          <div class="align-right">
+            <button type="submit" name="request-sample">
+              Request Sample
+            </button>
+          </div>
+        </form>
+      </section>
 
-    <section>
-      <h2>Sample Request Confirmation</h2>
+    <?php } else { ?>
 
-      <p>Thank you, <?php echo htmlspecialchars($form_values["Name"]); ?>, for your request. We will contact you at <?php echo htmlspecialchars($form_values[" phone"]); ?> to arrange a delivery date, time, and location for your sample <?php echo htmlspecialchars($form_values["bouquet"]); ?> bouquet.</p>
+      <section>
+        <h2>Sample Request Confirmation</h2>
 
-      <p><a href="/flowershop">Request another sample</a>.</p>
-    </section>
+        <p>Thank you, <?php echo htmlspecialchars($form_values["name"]); ?>, for your request. We will contact you at <?php echo htmlspecialchars($form_values["phone"]); ?> to arrange a delivery date, time, and location for your sample <?php echo htmlspecialchars($form_values["bouquet"]); ?> bouquet.</p>
+
+        <p><a href="/flowershop">Request another sample</a>.</p>
+      </section>
+
+    <?php } ?>
 
   </main>
 

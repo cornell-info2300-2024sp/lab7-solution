@@ -5,7 +5,6 @@ const ROUTES = array(
   "/citation-policy"              => "pages/citations.php",
   "/cooking-classes"              => "pages/cooking-classes.php",
   "/flowershop"                   => "pages/flowershop.php",
-  "/flowershop/confirmation"      => "pages/flowershop-confirmation.php",
   "/transcript"                   => "pages/transcript.php",
   "/reviews"                      => "pages/reviews.php"
 );
